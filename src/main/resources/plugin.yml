@@ -1,0 +1,4 @@
+name: BitAPI
+version: '${project.version}'
+main: com.github.bitc3t.bitapi.BitAPI
+api-version: 1.20
