@@ -2,8 +2,10 @@ package com.github.bitc3t.bitapi.objects;
 
 import com.github.bitc3t.bitapi.BitAPI;
 import com.github.bitc3t.bitapi.objects.teams.Team;
+import com.github.bitc3t.bitapi.spectator.SpectatorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -60,7 +62,23 @@ public class BitPlayer {
     }
 
     public void setSpectator(boolean spectator) {
-        // TODO
+        this.isSpectator = spectator;
+
+        if(spectator == true) {
+            for(ItemStack itemStack : player.getInventory()) {
+                if(itemStack == null) {
+                    continue;
+                }
+                player.getLocation().getWorld().dropItemNaturally(player.getLocation(), itemStack);
+            }
+
+            player.getInventory().clear();
+
+            SpectatorUtils.setSpectator(player);
+            return;
+        }
+
+        SpectatorUtils.unsetSpectator(player);
     }
 
     public void changeTeam(Team team) {

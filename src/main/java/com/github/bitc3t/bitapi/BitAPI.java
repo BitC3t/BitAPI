@@ -1,6 +1,9 @@
 package com.github.bitc3t.bitapi;
 
 import com.github.bitc3t.bitapi.commands.ComExecutor;
+import com.github.bitc3t.bitapi.events.ChatEvents;
+import com.github.bitc3t.bitapi.events.RegistryEvents;
+import com.github.bitc3t.bitapi.events.WorldBorderEvents;
 import com.github.bitc3t.bitapi.game.GameRegistry;
 import com.github.bitc3t.bitapi.objects.BitPlayer;
 import com.github.bitc3t.bitapi.objects.teams.TeamController;
@@ -39,9 +42,14 @@ public final class BitAPI extends JavaPlugin {
         // Initialization
         try {
             this.gameRegistry.init();
+            this.teamRegistry.init();
         } catch (IOException e) {
             this.getLogger().info("[API] Failed to initialise controllers.");
         }
+
+        // Registering Commands & Events
+        this.registerCommands();
+        this.registerEvents();
     }
 
     @Override
@@ -84,5 +92,11 @@ public final class BitAPI extends JavaPlugin {
     private void registerCommands() {
         this.getCommand("bitapi").setExecutor(new ComExecutor(this));
         this.getCommand("bitapi").setTabCompleter(new ComExecutor(this));
+    }
+
+    private void registerEvents() {
+        Bukkit.getPluginManager().registerEvents(new RegistryEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new ChatEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new WorldBorderEvents(), this);
     }
 }
